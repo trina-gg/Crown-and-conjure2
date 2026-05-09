@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Crown & Conjure — Black Hair Prompts for Fantasy Worlds</title>
+<meta name="description" content="A prompt builder and style dictionary for generating Black hair in fantasy game concept art with AI tools." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,800;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root { --bg:#14091a; --bg-elev:#1f1228; --bg-card:#261632; --bg-input:#110610; --ink:#f4e9d8; --ink-dim:#c9b8a3; --ink-faint:#8a7a68; --gold:#d4a574; --gold-bright:#f0c184; --plum:#6b3a5c; --line:#3a2444; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { background:var(--bg); color:var(--ink); font-family:'Inter',system-ui,sans-serif; line-height:1.6; min-height:100vh; background-image: radial-gradient(circle at 15% 10%, rgba(212,165,116,.06) 0, transparent 40%), radial-gradient(circle at 85% 90%, rgba(107,58,92,.15) 0, transparent 50%); }
+.container { max-width:1100px; margin:0 auto; padding:0 24px; }
+header { padding:60px 0 40px; border-bottom:1px solid var(--line); }
+.brand { font-family:'Fraunces',serif; font-weight:800; font-size:clamp(2.4rem,5vw,4rem); line-height:1; letter-spacing:-.02em; margin-bottom:12px; }
+.brand .amp { font-style:italic; font-weight:500; color:var(--gold); margin:0 4px; }
+.tagline { font-family:'Fraunces',serif; font-style:italic; font-size:1.15rem; color:var(--ink-dim); max-width:620px; margin-bottom:20px; }
+.lede { max-width:720px; color:var(--ink-dim); font-size:.98rem; }
+.lede a { color:var(--gold-bright); }
+nav { display:flex; gap:4px; margin:32px 0; border-bottom:1px solid var(--line); overflow-x:auto; }
+nav button { background:none; border:none; color:var(--ink-faint); font-family:inherit; font-size:.95rem; font-weight:500; padding:14px 20px; cursor:pointer; border-bottom:2px solid transparent; transition:color .2s,border-color .2s; white-space:nowrap; }
+nav button:hover { color:var(--ink); }
+nav button.active { color:var(--gold-bright); border-bottom-color:var(--gold); }
+.panel { display:none; padding:16px 0 80px; }
+.panel.active { display:block; }
+.builder-grid { display:grid; grid-template-columns:1fr; gap:32px; }
+@media (min-width:880px) { .builder-grid { grid-template-columns:1fr 1.1fr; } }
+.field { margin-bottom:22px; }
+.field label { display:block; font-size:.78rem; font-weight:600; text-transform:uppercase; letter-spacing:.1em; color:var(--gold); margin-bottom:8px; }
+.field .hint { font-size:.82rem; color:var(--ink-faint); margin-top:6px; font-style:italic; }
+select, input[type="text"] { width:100%; background:var(--bg-input); border:1px solid var(--line); color:var(--ink); padding:12px 14px; border-radius:6px; font-family:inherit; font-size:.95rem; transition:border-color .2s; }
+select:focus, input:focus { outline:none; border-color:var(--gold); }
+select option { background:var(--bg-elev); color:var(--ink); }
+.output-card { background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:24px; position:sticky; top:24px; }
+.output-card h3 { font-family:'Fraunces',serif; font-weight:600; font-size:1.3rem; margin-bottom:4px; }
+.output-card .sub { color:var(--ink-faint); font-size:.85rem; margin-bottom:18px; }
+.tool-tabs { display:flex; gap:4px; margin-bottom:14px; background:var(--bg-input); padding:4px; border-radius:8px; }
+.tool-tabs button { flex:1; background:none; border:none; color:var(--ink-faint); padding:8px; font-family:inherit; font-size:.85rem; font-weight:500; cursor:pointer; border-radius:5px; transition:all .15s; }
+.tool-tabs button.active { background:var(--plum); color:var(--ink); }
+.prompt-output { background:var(--bg-input); border:1px solid var(--line); border-radius:6px; padding:16px; font-family:'SF Mono',Menlo,monospace; font-size:.88rem; line-height:1.55; color:var(--ink); min-height:140px; white-space:pre-wrap; word-break:break-word; }
+.prompt-output:empty::before { content:"Pick a hairstyle to start building..."; color:var(--ink-faint); font-style:italic; }
+.actions { display:flex; gap:8px; margin-top:14px; }
+.btn { background:var(--gold); color:#2a1810; border:none; padding:10px 18px; border-radius:6px; font-family:inherit; font-weight:600; font-size:.9rem; cursor:pointer; flex:1; transition:background .15s; }
+.btn:hover { background:var(--gold-bright); }
+.btn.secondary { background:transparent; color:var(--ink-dim); border:1px solid var(--line); }
+.btn.secondary:hover { border-color:var(--gold); color:var(--ink); }
+.tip { margin-top:14px; padding:12px 14px; background:rgba(212,165,116,.08); border-left:3px solid var(--gold); border-radius:4px; font-size:.85rem; color:var(--ink-dim); }
+.library-search { margin-bottom:24px; max-width:480px; }
+.style-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px; }
+.style-card { background:var(--bg-card); border:1px solid var(--line); border-radius:10px; padding:22px; transition:border-color .2s, transform .2s; }
+.style-card:hover { border-color:var(--gold); transform:translateY(-2px); }
+.style-card .swatch { width:100%; height:70px; border-radius:6px; margin-bottom:14px; background:var(--pattern,linear-gradient(135deg,var(--plum),var(--bg-input))); }
+.style-card h4 { font-family:'Fraunces',serif; font-weight:600; font-size:1.25rem; margin-bottom:4px; }
+.style-card .alt { font-size:.78rem; color:var(--ink-faint); font-style:italic; margin-bottom:10px; }
+.style-card p { font-size:.88rem; color:var(--ink-dim); margin-bottom:12px; }
+.style-card .origin { font-size:.82rem; color:var(--ink-dim); padding-top:12px; border-top:1px solid var(--line); }
+.style-card .origin strong { color:var(--gold); text-transform:uppercase; font-size:.72rem; letter-spacing:.08em; display:block; margin-bottom:4px; }
+.about-content { max-width:720px; }
+.about-content h2 { font-family:'Fraunces',serif; font-weight:600; font-size:1.8rem; margin:32px 0 12px; }
+.about-content h2:first-child { margin-top:0; }
+.about-content p { color:var(--ink-dim); margin-bottom:14px; font-size:.98rem; }
+.about-content ul { margin:12px 0 18px 24px; color:var(--ink-dim); }
+.about-content li { margin-bottom:8px; }
+.about-content a { color:var(--gold-bright); text-decoration:underline; text-decoration-color:rgba(212,165,116,.4); text-underline-offset:3px; }
+.about-content a:hover { text-decoration-color:var(--gold); }
+.about-content blockquote { border-left:3px solid var(--gold); padding:4px 0 4px 18px; margin:18px 0; font-family:'Fraunces',serif; font-style:italic; color:var(--ink); font-size:1.05rem; }
+.anti-pattern { background:var(--bg-card); border:1px solid var(--line); border-radius:8px; padding:20px; margin:18px 0; }
+.anti-pattern .row { display:grid; grid-template-columns:auto 1fr; gap:14px; align-items:start; padding:10px 0; border-bottom:1px solid var(--line); }
+.anti-pattern .row:last-child { border-bottom:none; }
+.anti-pattern .bad { color:#d97a7a; text-decoration:line-through; font-family:'SF Mono',monospace; font-size:.88rem; }
+.anti-pattern .good { color:var(--gold-bright); font-family:'SF Mono',monospace; font-size:.88rem; }
+footer { border-top:1px solid var(--line); padding:32px 0; color:var(--ink-faint); font-size:.82rem; text-align:center; }
+.toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--gold); color:#2a1810; padding:12px 24px; border-radius:8px; font-weight:600; font-size:.9rem; transition:transform .3s ease; z-index:1000; }
+.toast.show { transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<header>
+<h1 class="brand">Crown <span class="amp">&amp;</span> Conjure</h1>
+<p class="tagline">A prompt builder for Black hair in fantasy worlds.</p>
+<p class="lede">AI image tools default to Eurofantasy. Black users do extra prompt labor just to get accurate hair textures and styles—and even then, results often flatten or stereotype. This is a small intervention: a curated dictionary of Black hairstyles paired with fantasy archetype prompts, formatted for the tool you're using. Built in the spirit of A.M. Darke's <a href="https://afrohairlibrary.org/" target="_blank" rel="noopener">Open Source Afro Hair Library</a> and the Dove + OSAHL <a href="https://www.dove.com/us/en/campaigns/purpose/code-my-crown.html" target="_blank" rel="noopener">Code My Crown</a> guide.</p>
+</header>
+
+<nav>
+<button class="tab-btn active" data-panel="builder">Build a Prompt</button>
+<button class="tab-btn" data-panel="library">Style Library</button>
+<button class="tab-btn" data-panel="about">Why This Exists</button>
+</nav>
+
+<div class="panel active" id="builder">
+<div class="builder-grid">
+<div>
+<div class="field"><label for="hair">Hairstyle</label><select id="hair"><option value="">Choose a style…</option></select><div class="hint" id="hairHint"></div></div>
+<div class="field"><label for="length">Length / Size</label><select id="length"><option value="">Default for the style</option><option value="short">Short / cropped</option><option value="medium">Medium length</option><option value="long">Long</option><option value="very long">Floor-length</option><option value="thick">Thick / voluminous</option><option value="thin micro">Micro / thin</option></select></div>
+<div class="field"><label for="role">Fantasy Archetype</label><select id="role"><option value="">Choose a role…</option><option value="warrior">Warrior</option><option value="mage">Mage / Sorcerer</option><option value="royal">Royalty</option><option value="ranger">Ranger / Hunter</option></select></div>
+<div class="field"><label for="aesthetic">Aesthetic</label><select id="aesthetic"><option value="">Choose an aesthetic…</option><option value="afrof">Afrofuturism</option><option value="africanf">Africanfuturism (Okorafor)</option><option value="dark">Dark fantasy</option><option value="high">High fantasy (non-European)</option><option value="mythic">Mythic / folkloric</option></select><div class="hint" id="aestheticHint"></div></div>
+<div class="field"><label for="skin">Skin Tone <span style="text-transform:none;color:var(--ink-faint);font-weight:400">(specify—vague prompts default lighter)</span></label><select id="skin"><option value="">Choose a tone…</option><option value="deep dark brown">Deep dark brown</option><option value="rich dark brown">Rich dark brown</option><option value="warm brown">Warm brown</option><option value="medium brown">Medium brown</option><option value="light brown">Light brown</option></select></div>
+<div class="field"><label for="extra">Anything else <span style="text-transform:none;color:var(--ink-faint);font-weight:400">(optional)</span></label><input type="text" id="extra" placeholder="e.g. wielding a glaive, dramatic lighting, by a waterfall" /></div>
+</div>
+<div>
+<div class="output-card">
+<h3>Your prompt</h3>
+<p class="sub">Optimized for the tool you select.</p>
+<div class="tool-tabs" id="tabs">
+<button class="active" data-t="mj">Midjourney</button>
+<button data-t="dalle">DALL-E / ChatGPT</button>
+<button data-t="generic">Generic / SD</button>
+</div>
+<div class="prompt-output" id="prompt"></div>
+<div class="actions"><button class="btn" id="copy">Copy prompt</button><button class="btn secondary" id="reset">Reset</button></div>
+<div class="tip"><strong style="color:var(--gold-bright)">💡 Tip:</strong> Specifying styles by their proper names (e.g. "Fulani braids" vs "African braids") meaningfully improves AI accuracy. Vague terms get vague results.</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="panel" id="library">
+<input type="text" class="library-search" id="searchBox" placeholder="Search styles… (e.g. braids, locs, twists, fade)" />
+<div class="style-grid" id="styleGrid"></div>
+</div>
+
+<div class="panel" id="about">
+<div class="about-content">
+
+<h2>Why this exists</h2>
+<p>AI image generators are trained on the open web, which means they inherit its biases. Default outputs skew white, straight-haired, and Eurofantasy. To get Black characters with accurate hair, users have to add qualifiers, name specific styles, fight the model's defaults, and often regenerate many times. This is unpaid labor—the cost of being a non-default user.</p>
+
+<p>Sociologist Ruha Benjamin calls this kind of pattern "the New Jim Code": new technologies that "reflect and reproduce existing inequities but that are promoted and perceived as more objective and progressive than the discriminatory systems of a previous era." AI image gen presents itself as neutral—the algorithm doesn't see race—but the asset web it was trained on already encodes a hierarchy in which white European aesthetics are unmarked and centered. The bias is the inheritance, not the intent.</p>
+
+<p>Fantasy is one of the worst-affected genres. The Tolkien-derived high fantasy that underwrites most game art treats whiteness as the unmarked default. Hogwarts Legacy, Dragon Age, Skyrim, Elden Ring—all have been criticized for poor Black hair options in their character creators. In her 2013 essay "How Long 'til Black Future Month?", N.K. Jemisin asks the question that drives this project: where are the Black people in our imagined futures? Meanwhile, an entire tradition of Black fantasy literature—Jemisin, Tomi Adeyemi, Nnedi Okorafor—imagines fantasy worlds where Black aesthetics are central, not exotic.</p>
+
+<p>This tool is a small attempt to lower the prompt labor cost. It encodes the vocabulary and cultural specificity that experienced Black AI users have figured out through trial and error, so newcomers don't have to start from zero.</p>
+
+<h2>Lineage</h2>
+<p>This project stands on the shoulders of:</p>
+<ul>
+<li><strong style="color:var(--ink)">A.M. Darke</strong>'s <a href="https://afrohairlibrary.org/" target="_blank" rel="noopener">Open Source Afro Hair Library</a>—free 3D models of Black hair, made by Black artists, addressing the asset-store representation crisis. Darke documented that searches for "Black hair" on TurboSquid returned literal horses, racist caricatures, and hypersexualized imagery before this project existed.</li>
+<li><strong style="color:var(--ink)">Code My Crown</strong>—Dove + OSAHL's free 200-page guide for coding textured Black hair in games, with 15 hair sculpts and cultural context. Many style descriptions in this dictionary draw on Code My Crown's framing.</li>
+<li><strong style="color:var(--ink)">Amira Virgil (Xmiramira)</strong>'s Melanin Pack and The Black Simmer community—a parallel modding infrastructure built because EA wouldn't. Recent academic work frames The Black Simmer as a "site of theoretical praxis" centered on mentoring, collective care, and Black joy (Smith et al., "Constructing a Community of Play," <em>Proc. ACM HCI</em>, 2025).</li>
+<li><strong style="color:var(--ink)">Nnedi Okorafor</strong>'s framing of <strong>Africanfuturism</strong>—distinct from Afrofuturism, rooted in continental African cultures and futures rather than diaspora.</li>
+<li><strong style="color:var(--ink)">Woodrow Winchester</strong>'s argument for Afrofuturism as a "design lens" that makes biases visible and provides "a methodological framework for challenging and addressing them."</li>
+</ul>
+
+<h2>Prompt anti-patterns</h2>
+<p>Words that hurt more than help when prompting AI:</p>
+<div class="anti-pattern">
+<div class="row"><span class="bad">dreadlocks</span><span class="good">→ locs <span style="color:var(--ink-faint);font-style:italic">(the "dread" prefix has colonial roots)</span></span></div>
+<div class="row"><span class="bad">ethnic / exotic</span><span class="good">→ name the specific origin or culture</span></div>
+<div class="row"><span class="bad">tribal</span><span class="good">→ name the actual tradition (Yoruba, Maasai, Akan, etc.)</span></div>
+<div class="row"><span class="bad">nappy / kinky</span><span class="good">→ type 4 hair, coily texture, natural texture</span></div>
+<div class="row"><span class="bad">African braids</span><span class="good">→ specify: Fulani, Senegalese, box, cornrows, etc.</span></div>
+<div class="row"><span class="bad">dark-skinned (alone)</span><span class="good">→ deep brown / rich brown / warm brown skin</span></div>
+</div>
+
+<h2>A note on authority</h2>
+<p>This is a starting point, not a definitive reference. Hairstyle origins and cultural context deserve careful sourcing—the descriptions here are deliberately brief and should be cross-checked against community sources (Code My Crown, Ayana Byrd & Lori Tharps's <em>Hair Story: Untangling the Roots of Black Hair in America</em>, and the work of A.M. Darke). Corrections and additions welcome via the GitHub repo.</p>
+
+<h2>How to use the prompts</h2>
+<p>Copy a prompt, paste it into your tool of choice (Midjourney via Discord, DALL-E in ChatGPT, or any Stable Diffusion / Flux interface). Generate at least 4 outputs—AI is stochastic, and the first result rarely captures cultural specificity. Iterate by adding details that worked and removing ones that didn't.</p>
+
+<blockquote>"All of us can be caretakers, all of us can be stewards." — A.M. Darke</blockquote>
+
+</div>
+</div>
+
+<footer>
+<p>Crown &amp; Conjure · Open source · Built for educational and community use.</p>
+</footer>
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+const HAIRSTYLES = [
+  { id:"locs", name:"Locs", altNames:"Sometimes called dreadlocks—but \"locs\" is preferred.", description:"Rope-like strands formed by matting hair sections together over time.", origin:"Found across many cultures throughout history (ancient Egypt, India, Ethiopia). In Black communities locs hold deep personal and often spiritual significance, including in Rastafari tradition.", promptCore:"long natural locs", fantasyVariants:{ warrior:"thick locs adorned with metal cuffs and warrior beads", mage:"long flowing locs woven with charms, crystals, and silver thread", royal:"regal locs styled in an elaborate updo with gold rings and cowries", ranger:"practical locs tied back with leather cord" }, tip:"Specify length and adornments. \"Locs\" alone often produces hair too thin or sparse." },
+  { id:"goddess-locs", name:"Goddess Locs", altNames:"", description:"Locs with loose curly or wavy ends, often longer and more voluminous than traditional locs.", origin:"Modern variation popularized in the 2010s, often executed with extensions for a softer, more sculptural look.", promptCore:"long goddess locs with loose wavy curly ends", fantasyVariants:{ warrior:"long goddess locs with wavy ends and warrior beads", mage:"ethereal goddess locs flowing with magical wind, curly ends glowing", royal:"regal goddess locs with curly ends and a jeweled crown", ranger:"practical goddess locs tied loosely back" }, tip:"\"Loose wavy ends\" or \"curly tips\" is what distinguishes goddess locs from regular locs." },
+  { id:"faux-locs", name:"Faux Locs", altNames:"Temporary locs.", description:"A protective style that mimics traditional locs using extensions. Removable, unlike permanent locs.", origin:"Popular protective style for natural hair, allowing the loc aesthetic without long-term commitment.", promptCore:"long faux locs, sleek and uniform", fantasyVariants:{ warrior:"sleek faux locs pulled into a high warrior tail with metal cuffs", mage:"long faux locs in deep tones, ends dipped in glowing pigment", royal:"regal faux locs gathered into a jeweled coil at the crown", ranger:"practical faux locs in a single thick plait down the back" }, tip:"Faux locs tend to be more uniform and polished than natural locs—say \"sleek\" or \"uniform\" for accurate results." },
+  { id:"box-braids", name:"Box Braids", altNames:"", description:"Long braids parted into clean square sections, often with extensions.", origin:"Ancient African origins, traced to Southern Africa over 3,000 years ago. Repopularized in modern Black American culture by Janet Jackson in Poetic Justice (1993).", promptCore:"long box braids parted in clean even square sections", fantasyVariants:{ warrior:"battle-ready box braids with metal beads at the ends, half tied back", mage:"long box braids in deep tones, ends dipped in glowing pigment", royal:"elaborate box braids gathered in a high jeweled crown", ranger:"practical box braids in a single thick plait down the back" }, tip:"Mention the partings—AI often skips this detail. \"Clean even box-shaped parts\" helps." },
+  { id:"knotless-braids", name:"Knotless Braids", altNames:"", description:"A modern variant of box braids where extensions are added gradually rather than knotted at the root.", origin:"Popularized in the late 2010s. Less tension on the scalp than traditional box braids; lays flatter and moves more naturally.", promptCore:"long knotless braids, smooth at the root, flowing freely", fantasyVariants:{ warrior:"long knotless braids tied back with leather cord, beaded ends", mage:"flowing knotless braids with crystals woven near the tips", royal:"elegant knotless braids cascading freely with gold accents", ranger:"practical knotless braids gathered loosely at the back" }, tip:"Emphasize \"smooth at the root\" or \"no knots at the scalp\"—this is the visual signature." },
+  { id:"cornrows", name:"Cornrows", altNames:"Also: canerows (Caribbean).", description:"Tight braids close to the scalp, formed in linear or geometric patterns.", origin:"Among the oldest documented hairstyles—depicted in African art dating to at least 3000 BCE. During the transatlantic slave trade, enslaved Africans used cornrows to map escape routes and hide grains of rice.", promptCore:"intricate cornrows in geometric patterns close to the scalp", fantasyVariants:{ warrior:"tight warrior cornrows in a flame pattern, gold cuffs at the ends", mage:"cornrows arranged in arcane sigil patterns across the scalp", royal:"cornrows in concentric circles fitted to a regal crown", ranger:"practical cornrows in a clean back-swept pattern" }, tip:"Describe the pattern explicitly—straight back, zigzag, geometric, swirl. Otherwise AI defaults to messy or matted." },
+  { id:"stitch-braids", name:"Stitch Braids", altNames:"Stitch cornrows.", description:"Cornrows with extremely precise, visible \"stitched\" partings between rows.", origin:"Modern variation of cornrows, popularized in the 2010s–2020s through Black hair stylists on Instagram and TikTok.", promptCore:"stitch braids with crisp visible parts between rows, scalp showing", fantasyVariants:{ warrior:"stitch braids with metal cuffs at the ends, precise scalp lines", mage:"stitch braids with glowing pigment along the partings", royal:"stitch braids in a regal crown formation, gold edging", ranger:"practical stitch braids straight back, leather-wrapped ends" }, tip:"Emphasize \"crisp partings\" or \"visible scalp lines\"—this is what distinguishes stitch braids from regular cornrows." },
+  { id:"fulani", name:"Fulani Braids", altNames:"", description:"Cornrows with a center braid, side braids framing the face, often beaded.", origin:"Originated with the Fulani (Fulɓe) people of West Africa—Mali, Senegal, Niger, Nigeria, and Guinea. Traditionally adorned with cowrie shells, beads, and gold.", promptCore:"Fulani braids with gold beads, center cornrow and side braids", fantasyVariants:{ warrior:"Fulani braids with bone and gold beads, two long side plaits framing the face", mage:"Fulani braids threaded with crystals and silver beads, glowing runes at the parts", royal:"elaborate Fulani braids with cowrie shells and gold beads, jeweled hair pin at the crown", ranger:"practical Fulani braids with leather wraps and wooden beads" }, tip:"Always say \"Fulani braids\"—not \"African braids.\" The specificity dramatically improves output." },
+  { id:"lemonade-braids", name:"Lemonade Braids", altNames:"Side-swept cornrows.", description:"Cornrows swept dramatically to one side, named after Beyoncé's Lemonade.", origin:"Popularized in 2016 by Beyoncé's visual album Lemonade. The style itself draws on traditional cornrowing techniques.", promptCore:"side-swept lemonade braids cascading over one shoulder", fantasyVariants:{ warrior:"lemonade braids swept over one shoulder, beaded ends, war paint", mage:"lemonade braids sweeping dramatically with glowing tips", royal:"lemonade braids cascading over one shoulder, jeweled accents", ranger:"practical lemonade braids tied at the end with leather cord" }, tip:"\"Side-swept\" is the key descriptor—without it, AI defaults to symmetrical braids." },
+  { id:"bantu-knots", name:"Bantu Knots", altNames:"", description:"Sectioned hair twisted into stacked knots across the scalp.", origin:"Named after the Bantu peoples of Southern and Central Africa, where the style originated and remains culturally significant.", promptCore:"bantu knots arranged in a geometric pattern across the scalp", fantasyVariants:{ warrior:"bantu knots adorned with small gold pins, fierce stance", mage:"bantu knots glowing faintly at the base, mystical aura", royal:"bantu knots adorned with jewels, regal posture", ranger:"practical bantu knots tied with leather cord" }, tip:"Specify \"across the scalp\" or \"in rows\"—AI sometimes only generates one or two knots otherwise." },
+  { id:"senegalese-twists", name:"Senegalese Twists", altNames:"Rope twists.", description:"Two-strand twists with extensions, longer and finer than Marley twists.", origin:"Named after Senegal, where the technique was popularized.", promptCore:"long sleek Senegalese twists", fantasyVariants:{ warrior:"battle-ready Senegalese twists pulled into a high tail", mage:"long Senegalese twists with glowing runes near the tips", royal:"Senegalese twists arranged in an elegant cascade", ranger:"practical Senegalese twists in a single braid down the back" }, tip:"Distinguish from box braids: twists are smoother, ropier. Say \"two-strand rope twists\" if AI confuses them." },
+  { id:"marley-twists", name:"Marley Twists", altNames:"Havana twists are similar but chunkier.", description:"Chunky two-strand twists with a kinky, natural-looking texture.", origin:"Named for the Marley hair extension brand, evoking Bob Marley's locs. Distinguished from Senegalese twists by their thicker, more textured appearance.", promptCore:"thick Marley twists with kinky natural texture", fantasyVariants:{ warrior:"thick Marley twists tied back with leather cord", mage:"voluminous Marley twists, glowing tips", royal:"lush Marley twists gathered in a regal updo", ranger:"practical Marley twists in a single thick braid" }, tip:"Emphasize \"kinky texture\" and \"thick\"—distinguishes from sleek Senegalese twists." },
+  { id:"two-strand-twists", name:"Two-Strand Twists", altNames:"Mini twists when small.", description:"Sections of natural hair twisted around each other, no extensions.", origin:"Foundational natural hair style across the African diaspora, used both as a finished look and as a precursor to twist-outs.", promptCore:"neat two-strand twists in natural hair, no extensions", fantasyVariants:{ warrior:"tight two-strand twists with warrior markings on the scalp", mage:"two-strand twists with glowing magical pigment at the tips", royal:"elegant two-strand twists pulled into a regal style", ranger:"practical two-strand twists tied back" }, tip:"Specify \"natural hair\" not extensions—that's what distinguishes from Senegalese/Marley twists." },
+  { id:"twist-out", name:"Twist-Out", altNames:"", description:"Hair twisted overnight, then unraveled for defined springy curls.", origin:"A staple natural hair styling technique in Black haircare traditions. Specifically called out by A.M. Darke as a style \"rarely an option\" in video games.", promptCore:"defined twist-out curls, voluminous, type 4 natural texture", fantasyVariants:{ warrior:"wild twist-out curls flowing as she runs into battle", mage:"voluminous twist-out curls catching magical wind", royal:"perfectly defined twist-out curls swept up in a half-crown", ranger:"twist-out curls tied loosely back with cord" }, tip:"Say \"defined curls\"—twist-outs are about definition, not frizz." },
+  { id:"wash-and-go", name:"Wash and Go", altNames:"", description:"Defined natural curl pattern enhanced with product, no manipulation.", origin:"A staple of the modern natural hair movement—celebrating natural curl patterns as they grow. Type 3C–4B textures most often associated.", promptCore:"defined natural curls, type 3C/4A wash-and-go", fantasyVariants:{ warrior:"wild defined curls flowing in battle", mage:"voluminous wash-and-go curls catching magical light", royal:"polished wash-and-go curls under a circlet", ranger:"wash-and-go curls tied loosely back" }, tip:"Specify \"defined\"—wash-and-go is about curl definition. Specify type (3C, 4A) for accuracy." },
+  { id:"afro", name:"Natural Afro", altNames:"Type 4 / 4C natural hair.", description:"Hair worn in its natural coily pattern, voluminous and rounded.", origin:"Symbol of the Black Power movement of the 1960s–70s—a political assertion of natural beauty against assimilationist beauty standards. The term \"afro\" derives from \"Afro-American.\"", promptCore:"voluminous natural afro, type 4C coily hair texture", fantasyVariants:{ warrior:"fierce voluminous afro, war paint, type 4C texture", mage:"haloed afro lit from within by magical light", royal:"perfectly rounded regal afro adorned with a circlet", ranger:"natural afro tied back with a leather band" }, tip:"Specify \"type 4\" or \"4C\"—without it, AI tends to soften the texture toward looser curls or render it as a 1970s \"disco fro\" caricature." },
+  { id:"afro-puffs", name:"Afro Puffs", altNames:"Pineapple (single high puff).", description:"Natural hair gathered into one high puff (pineapple) or two side puffs.", origin:"Iconic natural hair style across all ages in Black communities. Specifically identified by Code My Crown as a top style \"missing or misrepresented\" in video games.", promptCore:"high afro puff ponytail, voluminous type 4 texture", fantasyVariants:{ warrior:"high afro puff with a single feather and bone hairpin", mage:"glowing high afro puff with crystals nestled into the volume", royal:"sculpted high afro puff crowned with a circlet", ranger:"practical afro puff secured with leather cord" }, tip:"Specify \"high\" or \"single puff\"—AI often misreads \"afro puff\" as just \"afro.\"" },
+  { id:"high-top-fade", name:"High-Top Fade", altNames:"", description:"Sharply faded sides with a tall flat-topped natural top.", origin:"Iconic 1980s–90s style associated with hip-hop culture—Kid 'n Play, Will Smith on The Fresh Prince of Bel-Air, A Tribe Called Quest. Specifically called out by A.M. Darke as a common style rarely available in games.", promptCore:"high-top fade with sharp lineup, tight faded sides", fantasyVariants:{ warrior:"high-top fade with intricate scalp designs etched into the fade", mage:"high-top fade with glowing sigils etched into the shaved sides", royal:"crisp high-top fade, gold circlet at the brow", ranger:"practical high-top fade with hunter's markings" }, tip:"\"Sharp lineup\" is important—AI tends to soften edges otherwise. Mention the \"flat top\" too." },
+  { id:"finger-waves", name:"Finger Waves", altNames:"", description:"Sleek S-shaped waves sculpted close to the head, glossy.", origin:"1920s flapper-era origin; reclaimed and popularized by Black women through the 1980s–90s and into the present, especially in pageant and red-carpet styling.", promptCore:"sleek finger waves sculpted across the head, glossy", fantasyVariants:{ warrior:"finger waves with subtle warrior markings at the temples", mage:"finger waves shimmering with iridescent pigment", royal:"perfect glossy finger waves under a delicate tiara", ranger:"neat finger waves tucked behind the ears" }, tip:"Say \"sculpted\" and \"glossy\"—AI sometimes generates messy waves otherwise." },
+  { id:"halo-braid", name:"Halo Braid", altNames:"Crown braid.", description:"A thick braid wrapped around the crown of the head like a halo.", origin:"Found across many cultures globally; in Black hair traditions often executed with cornrowed, twisted, or thick braided hair.", promptCore:"thick halo braid wrapped around the crown of the head", fantasyVariants:{ warrior:"thick warrior halo braid with metal accents", mage:"halo braid woven with starlight thread", royal:"halo braid as a natural crown, jeweled at the front", ranger:"practical halo braid keeping hair off the face" }, tip:"\"Wrapped around the crown\" is the key phrase. \"Crown braid\" also works." }
+];
+
+const ROLES = { warrior:"warrior", mage:"mage", royal:"royal", ranger:"ranger" };
+
+const AESTHETICS = {
+  afrof:    { name:"Afrofuturism", description:"Black diaspora futures, sci-fi/fantasy fusion, liberatory imagination.", fragment:"afrofuturist aesthetic, cosmic and ancestral motifs, gold and deep purple palette, jewel tones" },
+  africanf: { name:"Africanfuturism", description:"Rooted in continental African cultures and futures (Okorafor's term).", fragment:"africanfuturism aesthetic, continental African inspired sci-fantasy, vibrant cultural specificity, intricate detail" },
+  dark:     { name:"Dark fantasy", description:"Bleak, morally gray, gothic tones.", fragment:"dark fantasy concept art, gothic atmosphere, dramatic chiaroscuro lighting, painterly" },
+  high:     { name:"High fantasy (non-European)", description:"Epic scope and magic, but rooted in non-European aesthetics.", fragment:"epic high fantasy concept art, intricate detail, painterly, non-European inspired" },
+  mythic:   { name:"Mythic / folkloric", description:"Drawing on specific mythological traditions.", fragment:"mythic folkloric illustration, ceremonial detail, sacred geometry, painterly" }
+};
+
+const state = { hair:"", length:"", role:"", aesthetic:"", skin:"", extra:"", tool:"mj" };
+
+const hairSelect = document.getElementById('hair');
+HAIRSTYLES.forEach(h => {
+  const opt = document.createElement('option');
+  opt.value = h.id;
+  opt.textContent = h.name;
+  hairSelect.appendChild(opt);
+});
+
+function buildPrompt() {
+  if (!state.hair) return "";
+  const h = HAIRSTYLES.find(x => x.id === state.hair);
+  if (!h) return "";
+  let hairText = (state.role && h.fantasyVariants[state.role]) ? h.fantasyVariants[state.role] : h.promptCore;
+  if (state.length) hairText = `${state.length} ${hairText}`;
+  const role = state.role ? ROLES[state.role] : "character";
+  const aesth = state.aesthetic ? AESTHETICS[state.aesthetic] : null;
+  const aesthFrag = aesth ? aesth.fragment : "fantasy concept art";
+  const skin = state.skin ? `with ${state.skin} skin` : "";
+
+  if (state.tool === "mj") {
+    const parts = [`Black ${role}`, skin, hairText, aesthFrag, "character portrait, detailed face, cinematic lighting"].filter(Boolean);
+    let prompt = parts.join(", ");
+    if (state.extra) prompt += `, ${state.extra}`;
+    prompt += " --ar 2:3 --style raw --v 6";
+    return prompt;
+  }
+
+  if (state.tool === "dalle") {
+    let prompt = `A detailed fantasy character portrait of a Black ${role}`;
+    if (state.skin) prompt += ` with ${state.skin} skin`;
+    prompt += `. Their hair is styled in ${hairText}.`;
+    if (aesth) prompt += ` Aesthetic: ${aesth.name.toLowerCase()}—${aesth.description.toLowerCase()}`;
+    if (state.extra) prompt += ` Additional details: ${state.extra}.`;
+    prompt += ` Render with cinematic lighting that flatters dark skin (warm key light, cool rim light to separate hair from background). The hair texture should be specific and accurate, not generic.`;
+    return prompt;
+  }
+
+  const parts = ["(masterpiece, best quality, detailed face)", `Black ${role}`, skin, hairText, aesthFrag, "cinematic lighting, intricate detail, painterly"].filter(Boolean);
+  let prompt = parts.join(", ");
+  if (state.extra) prompt += `, ${state.extra}`;
+  return prompt;
+}
+
+function render() {
+  document.getElementById("prompt").textContent = buildPrompt();
+  const h = HAIRSTYLES.find(x => x.id === state.hair);
+  document.getElementById("hairHint").textContent = h ? h.tip : "";
+  const a = state.aesthetic ? AESTHETICS[state.aesthetic] : null;
+  document.getElementById("aestheticHint").textContent = a ? a.description : "";
+}
+
+["hair","length","role","aesthetic","skin"].forEach(id => {
+  document.getElementById(id).addEventListener("change", e => { state[id] = e.target.value; render(); });
+});
+document.getElementById("extra").addEventListener("input", e => { state.extra = e.target.value; render(); });
+
+document.querySelectorAll("#tabs button").forEach(b => {
+  b.addEventListener("click", () => {
+    document.querySelectorAll("#tabs button").forEach(x => x.classList.remove("active"));
+    b.classList.add("active");
+    state.tool = b.dataset.t;
+    render();
+  });
+});
+
+document.getElementById("copy").addEventListener("click", async () => {
+  const text = document.getElementById("prompt").textContent;
+  if (!text) return;
+  try { await navigator.clipboard.writeText(text); } catch(e) {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+  }
+  showToast('Copied!');
+});
+
+document.getElementById("reset").addEventListener("click", () => {
+  Object.assign(state, { hair:"", length:"", role:"", aesthetic:"", skin:"", extra:"" });
+  ["hair","length","role","aesthetic","skin"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("extra").value = "";
+  render();
+});
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.panel).classList.add("active");
+  });
+});
+
+function renderLibrary(filter = "") {
+  const grid = document.getElementById('styleGrid');
+  grid.innerHTML = "";
+  const f = filter.toLowerCase().trim();
+  const filtered = HAIRSTYLES.filter(h => {
+    if (!f) return true;
+    return h.name.toLowerCase().includes(f) || h.description.toLowerCase().includes(f) || h.altNames.toLowerCase().includes(f) || h.origin.toLowerCase().includes(f);
+  });
+  filtered.forEach((h, i) => {
+    const card = document.createElement('div');
+    card.className = 'style-card';
+    const hue1 = (i * 37) % 360;
+    const hue2 = (hue1 + 40) % 360;
+    card.style.setProperty('--pattern', `linear-gradient(135deg, hsl(${hue1}, 30%, 25%), hsl(${hue2}, 35%, 18%))`);
+    card.innerHTML = `<div class="swatch"></div><h4>${h.name}</h4>${h.altNames ? `<div class="alt">${h.altNames}</div>` : ''}<p>${h.description}</p><div class="origin"><strong>Origin</strong>${h.origin}</div>`;
+    grid.appendChild(card);
+  });
+  if (filtered.length === 0) {
+    grid.innerHTML = `<p style="color:var(--ink-faint);padding:40px;text-align:center;grid-column:1/-1">No styles match "${filter}". Try another search.</p>`;
+  }
+}
+
+document.getElementById('searchBox').addEventListener('input', e => renderLibrary(e.target.value));
+renderLibrary();
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 1800);
+}
+</script>
+</body>
+</html>
